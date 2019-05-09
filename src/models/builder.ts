@@ -2,43 +2,21 @@ import { Query } from "./query";
 import {
     Prefix,
     Select,
-    SelectItem,
-    PrefixItem
+    PrefixItem,
+    GroupBy,
+    OrderBy,
+    Where
 } from "./clause";
+import { Triple } from "./triple";
 
 export class Builder {
 
-    _prefix = '';
-    _select = "";
-    _orderBy = "";
-    _groupBy = ""
-
-
-    prefix(prefix: any) {
-    }
-
-    select(select: any) {
-        this._select += ` ${select}`;
-    }
-
-    where(where: any) {
-
-    }
-
-    graph() {
-
-    }
-
-    orderBy(orderBy: any) {
-        this._orderBy += ` ${orderBy}`
-    }
-
-
     //Example 1
-    query1() {
+    queryExample1() {
         let query = new Query();
         let prefix = new Prefix();
         let select = new Select();
+        let where = new Where();
         prefix.addPrefixItem(new PrefixItem('rdf'));
         prefix.addPrefixItem(new PrefixItem('rdfs'));
         prefix.addPrefixItem(new PrefixItem('dc'));
@@ -49,15 +27,23 @@ export class Builder {
         prefix.addPrefixItem(new PrefixItem('MF'));
         prefix.addPrefixItem(new PrefixItem('CC'));
         prefix.addPrefixItem(new PrefixItem('providedBy'));
-        select.addSelectItem(new SelectItem('distinct ?model ?modelTitle ?aspect ?term ?termLabel ?date'));
-        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct  ?entity;separator="@@") as ?entities'));
-        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct ?contributor;separator="@@") as ?contributors'))
-        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct ?providedBy;separator="@@") as ?groups'));
+        select.addSelect('distinct ?model ?modelTitle ?aspect ?term ?termLabel ?date');
+        select.addSelect('(GROUP_CONCAT(distinct  ?entity;separator="@@") as ?entities');
+        select.addSelect('(GROUP_CONCAT(distinct ?contributor;separator="@@") as ?contributors');
+        select.addSelect('(GROUP_CONCAT(distinct ?providedBy;separator="@@") as ?groups');
 
-        //  orderBy.orderBy(new SelectItem('?model ?modelTitle ?aspect ?term ?termLabel ?date'));
+        where.addWhere('VALUES ?aspect { BP: MF: CC: }');
+        where.addWhere(new Triple('?entity', 'rdf:type', '?aspect'));
+        where.addWhere(new Triple('?term', 'rdfs:label', '?termLabel'));
+
+        let groupBy = new GroupBy('?model ?modelTitle ?aspect ?term ?termLabel ?date');
+        let orderBy = new OrderBy('?date', 'DESC');
 
         query.addClause(prefix);
         query.addClause(select);
+        query.addClause(where);
+        query.addClause(groupBy);
+        query.addClause(orderBy);
 
         console.log(query.build())
 
@@ -81,18 +67,13 @@ export class Builder {
                         (GROUP_CONCAT(distinct  ?entity;separator="@@") as ?entities)
                         (GROUP_CONCAT(distinct ?contributor;separator="@@") as ?contributors)
                         (GROUP_CONCAT(distinct ?providedBy;separator="@@") as ?groups)
-        WHERE 
-        {
-          GRAPH ?model {
-              ?model metago:graphType metago:noctuaCam;
-                    dc:date ?date;
-                    dc:title ?modelTitle; 
-                    dc:contributor ?contributor .
-    
-              optional {?model providedBy: ?providedBy } .
-              ?entity rdf:type owl:NamedIndividual .
-              ?entity rdf:type ?term .
-              FILTER(?term = ${goTerm.id})
+        WHERE {
+            GRAPH ?model {
+                ?model metago:graphType metago:noctuaCam; dc:date ?date; dc:title ?modelTitle; dc:contributor ?contributor .        
+                optional {?model providedBy: ?providedBy } .
+                ?entity rdf:type owl:NamedIndividual .
+                ?entity rdf:type ?term .
+                FILTER(?term = ${goTerm.id})
             }
             VALUES ?aspect { BP: MF: CC: } .
             ?entity rdf:type ?aspect .

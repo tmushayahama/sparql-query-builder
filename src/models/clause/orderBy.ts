@@ -18,6 +18,6 @@ export class OrderBy extends Clause {
     }
 
     build() {
-        return `${this._direction} (${this._fields})`;
+        return `ORDER BY ${this._direction} (${this._fields})`;
     }
 }

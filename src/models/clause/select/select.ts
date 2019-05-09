@@ -1,21 +1,20 @@
 import { Clause } from './../clause';
 import { map } from 'lodash';
-import { SelectItem } from './select-item';
 
 export class Select extends Clause {
-    private _selectItems: SelectItem[] = [];
+    private _selectCollection: any = [];
 
     constructor() {
         super();
     }
 
-    addSelectItem(selectItem: SelectItem) {
-        this._selectItems.push(selectItem);
+    addSelect(item: string) {
+        this._selectCollection.push(item);
     }
 
     build() {
-        let selected = map(this._selectItems, (item) => {
-            return item.build();
+        let selected = map(this._selectCollection, (item) => {
+            return item
         })
         return `${[...selected].join('\n')}`;
     }
