@@ -1,6 +1,10 @@
 import { Query } from "./query";
-import { Prefix } from "./clause";
-import { PrefixItem } from "./clause/prefix-item";
+import {
+    Prefix,
+    Select,
+    SelectItem,
+    PrefixItem
+} from "./clause";
 
 export class Builder {
 
@@ -29,9 +33,12 @@ export class Builder {
         this._orderBy += ` ${orderBy}`
     }
 
+
+    //Example 1
     query1() {
         let query = new Query();
         let prefix = new Prefix();
+        let select = new Select();
         prefix.addPrefixItem(new PrefixItem('rdf'));
         prefix.addPrefixItem(new PrefixItem('rdfs'));
         prefix.addPrefixItem(new PrefixItem('dc'));
@@ -41,17 +48,24 @@ export class Builder {
         prefix.addPrefixItem(new PrefixItem('BP'));
         prefix.addPrefixItem(new PrefixItem('MF'));
         prefix.addPrefixItem(new PrefixItem('CC'));
-        prefix.addPrefixItem(new PrefixItem('providedB'));
+        prefix.addPrefixItem(new PrefixItem('providedBy'));
+        select.addSelectItem(new SelectItem('distinct ?model ?modelTitle ?aspect ?term ?termLabel ?date'));
+        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct  ?entity;separator="@@") as ?entities'));
+        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct ?contributor;separator="@@") as ?contributors'))
+        select.addSelectItem(new SelectItem('(GROUP_CONCAT(distinct ?providedBy;separator="@@") as ?groups'));
+
+        //  orderBy.orderBy(new SelectItem('?model ?modelTitle ?aspect ?term ?termLabel ?date'));
 
         query.addClause(prefix);
+        query.addClause(select);
 
         console.log(query.build())
 
     }
 
-
+    //temp
     buildCamsByGoTermQuery(goTerm: { id: any; }) {
-        var query = `
+        let query = `
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX dc: <http://purl.org/dc/elements/1.1/> 

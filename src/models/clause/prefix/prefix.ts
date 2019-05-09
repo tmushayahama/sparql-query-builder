@@ -1,4 +1,4 @@
-import { Clause } from './clause';
+import { Clause } from './../clause';
 import { Dictionary, Many, map, mapValues, flatMap, castArray } from 'lodash';
 import { PrefixItem } from './prefix-item';
 
