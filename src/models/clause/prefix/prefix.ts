@@ -30,6 +30,6 @@ export class Prefix extends Clause {
         let prefixed = map(this._prefixItems, (item) => {
             return item.build();
         })
-        return `${[...prefixed].join('\n')}`;
+        return `${[...prefixed].join('\n')}\n`;
     }
 }

@@ -16,6 +16,6 @@ export class Select extends Clause {
         let selected = map(this._selectCollection, (item) => {
             return item
         })
-        return `${[...selected].join('\n')}`;
+        return `SELECT ${[...selected].join('\n\t')}\n`;
     }
 }

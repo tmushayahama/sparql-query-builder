@@ -14,13 +14,13 @@ export class Where extends Clause {
     }
 
     build() {
-        let selected = map(this._whereCollection, (item) => {
+        let selected = map(this._whereCollection, (item: Clause | string) => {
             if (item instanceof Triple) {
                 return item.build();
             }
             return item;
         })
 
-        return `WHERE { \n ${[...this._whereCollection].join(' .\n\t')} \n }`;
+        return `WHERE {\n\t${[...selected].join(' .\n\t')}\n}\n`;
     }
 }
