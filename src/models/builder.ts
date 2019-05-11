@@ -11,25 +11,53 @@ import {
     Clause
 } from "./clause";
 import { Triple } from "./triple";
+import { Direction } from "./clause/orderBy";
 
-export abstract class Builder<T> {
-
+export abstract class Builder<T> extends Clause {
 
     protected abstract addClause(clause: Clause): T;
-
-    select(...items: string[]) {
-        let select = new Select();
-        items.map((item) => {
-            select.addComponent(item);
-        })
-        return this.addClause(select);
-    }
 
     prefix(...prefixes: string[]) {
         prefixes.map((prefix) => {
             this.addClause(new PrefixItem(prefix));
         });
+
         return this;
+    }
+
+    select(...items: string[]) {
+        let select = new Select();
+        items.map((item) => {
+            select.addComponent(item);
+        });
+
+        return this.addClause(select);
+    }
+
+    where(...items: (string | Graph | Triple | Query)[]) {
+        let where = new Where();
+        items.map((item) => {
+            where.addComponent(item);
+        });
+
+        return this.addClause(where);
+    }
+
+    graph(iri: string, ...items: (string | Triple | Optional)[]) {
+        let graph = new Graph(iri);
+        items.map((item) => {
+            graph.addComponent(item);
+        });
+
+        return this.addClause(graph);
+    }
+
+    orderBy(fields: string, direction: Direction) {
+        return this.addClause(new OrderBy(fields, direction));
+    }
+
+    groupBy(fields: string) {
+        return this.addClause(new GroupBy(fields));
     }
 
     //Example 1

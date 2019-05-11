@@ -2,6 +2,7 @@ import { Clause } from './../clause';
 import { map } from 'lodash';
 import { Triple } from './../../triple';
 import { Graph } from '../graph';
+import { Query } from './../../query';
 
 export class Where extends Clause {
     private _whereCollection: any[] = [];
@@ -10,7 +11,7 @@ export class Where extends Clause {
         super();
     }
 
-    addComponent(triple: Triple | Graph | string) {
+    addComponent(triple: Triple | Graph | Query | string) {
         this._whereCollection.push(triple);
     }
 
@@ -20,6 +21,7 @@ export class Where extends Clause {
                 item.indent(this._indent);
                 return item.build();
             }
+
             return item;
         })
 
