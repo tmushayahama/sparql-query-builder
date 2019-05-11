@@ -8,7 +8,7 @@ export class Select extends Clause {
         super();
     }
 
-    addSelect(item: string) {
+    addComponent(item: string) {
         this._selectCollection.push(item);
     }
 

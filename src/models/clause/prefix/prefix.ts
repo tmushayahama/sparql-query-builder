@@ -22,7 +22,7 @@ export class Prefix extends Clause {
         super();
     }
 
-    addPrefixItem(prefixItem: PrefixItem) {
+    addComponent(prefixItem: PrefixItem) {
         this._prefixItems.push(prefixItem);
     }
 

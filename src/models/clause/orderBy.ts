@@ -14,7 +14,9 @@ export class OrderBy extends Clause {
     constructor(fields: string, direction?: Direction) {
         super();
         this._fields = fields;
-        this._direction = direction;
+        if (direction) {
+            this._direction = direction;
+        }
     }
 
     build() {
