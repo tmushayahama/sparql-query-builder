@@ -8,7 +8,7 @@ graphQuery.graph('?model',
     new Optional('?model providedBy: ?providedBy'),
     new Triple('?entity ', 'rdf:type', 'owl:NamedIndividual'),
     new Triple('?entity', 'rdf:type', '?term'),
-    'FILTER(?term = GO:0003723)');
+    'FILTER(?term = GO:0017127)');
 
 query.prefix(
     'rdf',
@@ -35,4 +35,4 @@ query.prefix(
     .orderBy('?date', 'DESC')
 
 
-console.log(query.build())
+console.log(query.build()) 

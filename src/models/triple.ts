@@ -13,7 +13,7 @@ export class Triple extends Clause {
     }
 
     build() {
-        return `${this._indent}${this._subject} ${this._predicate} ${this._object} `
+        return `${this._subject} ${this._predicate} ${this._object}`
     }
 
 }

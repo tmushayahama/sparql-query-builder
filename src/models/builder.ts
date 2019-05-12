@@ -124,13 +124,18 @@ export abstract class Builder<T> extends Clause {
                         (GROUP_CONCAT(distinct  ?entity;separator="@@") as ?entities)
                         (GROUP_CONCAT(distinct ?contributor;separator="@@") as ?contributors)
                         (GROUP_CONCAT(distinct ?providedBy;separator="@@") as ?groups)
-        WHERE {
-            GRAPH ?model {
-                ?model metago:graphType metago:noctuaCam; dc:date ?date; dc:title ?modelTitle; dc:contributor ?contributor .        
-                optional {?model providedBy: ?providedBy } .
-                ?entity rdf:type owl:NamedIndividual .
-                ?entity rdf:type ?term .
-                FILTER(?term = ${goTerm.id})
+        WHERE 
+        {
+          GRAPH ?model {
+              ?model metago:graphType metago:noctuaCam;
+                    dc:date ?date;
+                    dc:title ?modelTitle; 
+                    dc:contributor ?contributor .
+    
+              optional {?model providedBy: ?providedBy } .
+              ?entity rdf:type owl:NamedIndividual .
+              ?entity rdf:type ?term .
+              FILTER(?term = GO:0017127)
             }
             VALUES ?aspect { BP: MF: CC: } .
             ?entity rdf:type ?aspect .
@@ -138,8 +143,7 @@ export abstract class Builder<T> extends Clause {
         }
     
         GROUP BY ?model ?modelTitle ?aspect ?term ?termLabel ?date
-        ORDER BY DESC(?date)
-        `;
+        ORDER BY DESC(?date)`;
 
         return '?query=' + encodeURIComponent(query);
     }

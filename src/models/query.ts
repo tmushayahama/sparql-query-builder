@@ -15,6 +15,6 @@ export class Query extends Builder<Query> {
     }
 
     build() {
-        return `${map(this.clauses, s => s.build()).join('\n')};`;
+        return `${map(this.clauses, s => s.build()).join('\n')}`;
     }
 }

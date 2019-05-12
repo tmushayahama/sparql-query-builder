@@ -20,6 +20,6 @@ export class Optional extends Clause {
             return item;
         })
 
-        return `${this._indent}OPTIONAL {\n${this._indent}${[...selected].join(' .\n\t')}\n}\n`;
+        return `OPTIONAL {\n${this._indent}${[...selected].join(' .\n')}\n}`;
     }
 }

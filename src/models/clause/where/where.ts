@@ -25,6 +25,6 @@ export class Where extends Clause {
             return item;
         })
 
-        return `WHERE {\n\t${[...selected].join(' .\n\t')}\n}\n`;
+        return `WHERE{\n${[...selected].join(' .\n')}\n}\n`;
     }
 }

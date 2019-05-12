@@ -20,8 +20,6 @@ export class Graph extends Clause {
         let selected = map(this._graphCollection, (item) => {
             return item
         })
-        return `${this._indent} GRAPH ${this._iri} {
-               ${[...selected].join('\n' + this._indent)}\n}
-            ${this._indent}\n`;
+        return `GRAPH ${this._iri} {\n${[...selected].join('.\n')}\n}\n`;
     }
 }
