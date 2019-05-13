@@ -1,6 +1,6 @@
 {
   "name": "sparql-query-builder",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,9 @@
   },
   "author": "",
   "license": "ISC",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/jest": "^24.0.12",
     "@types/lodash": "^4.14.124",

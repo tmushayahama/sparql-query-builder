@@ -23,3 +23,4 @@ export class Graph extends Clause {
         return `GRAPH ${this._iri} {\n${[...selected].join('.\n')}\n}\n`;
     }
 }
+

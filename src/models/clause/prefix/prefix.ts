@@ -1,6 +1,4 @@
 import { Clause } from './../clause';
-import { Dictionary, Many, map, mapValues, flatMap, castArray } from 'lodash';
-import { PrefixItem } from './prefix-item';
 
 export const PREFIX: any = {
     rdf: '<http://www.w3.org/1999/02/22-rdf-syntax-ns#>',
@@ -12,24 +10,23 @@ export const PREFIX: any = {
     BP: '<http://purl.obolibrary.org/obo/GO_0008150>',
     MF: '<http://purl.obolibrary.org/obo/GO_0003674>',
     CC: '<http://purl.obolibrary.org/obo/GO_0005575>',
-    providedBy: '<http://purl.org/pav/providedBy>'
+    providedBy: '<http://purl.org/pav/providedBy>',
+    has_affiliation: '<http://purl.obolibrary.org/obo/ERO_0000066>'
 }
 
 export class Prefix extends Clause {
-    private _prefixItems: PrefixItem[] = [];
+    private _prefix: string
 
-    constructor() {
+    constructor(prefix: string, iri: string) {
         super();
-    }
-
-    addComponent(prefixItem: PrefixItem) {
-        this._prefixItems.push(prefixItem);
+        this._prefix = `PREFIX ${prefix}: ${iri}`;
     }
 
     build() {
-        let prefixed = map(this._prefixItems, (item) => {
-            return item.build();
-        })
-        return `${[...prefixed].join('\n')}\n`;
+        return this._prefix;
     }
+}
+
+export function prefix(prefix: string, iri: string) {
+    return new Prefix(prefix, iri);
 }

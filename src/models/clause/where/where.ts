@@ -3,6 +3,7 @@ import { map } from 'lodash';
 import { Triple } from './../../triple';
 import { Graph } from '../graph';
 import { Query } from './../../query';
+import { Optional } from '../optional';
 
 export class Where extends Clause {
     private _whereCollection: any[] = [];
@@ -11,7 +12,7 @@ export class Where extends Clause {
         super();
     }
 
-    addComponent(triple: Triple | Graph | Query | string) {
+    addComponent(triple: Triple | Graph | Optional | Query | string) {
         this._whereCollection.push(triple);
     }
 

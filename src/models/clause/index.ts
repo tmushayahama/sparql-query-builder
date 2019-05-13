@@ -1,9 +1,8 @@
 export { Clause } from './clause';
 export { GroupBy } from './groupBy';
-export { Optional } from './optional';
+export { Optional, optional } from './optional';
 export { OrderBy } from './orderBy';
-export { Prefix } from './prefix/prefix';
-export { PrefixItem } from './prefix/prefix-item';
+export { Prefix, prefix } from './prefix/prefix';
 export { Select } from './select/select';
 export { Where } from './where/where';
 export { Graph } from './graph';

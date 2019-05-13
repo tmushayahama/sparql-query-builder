@@ -1,14 +1,17 @@
 import { Clause } from './../clause';
 import { map } from 'lodash';
+import { Triple } from '../triple';
+
+
 
 export class Optional extends Clause {
     private _optionalCollection: any[] = [];
 
-    constructor(statement?: string) {
+    constructor(...items: (string | Triple)[]) {
         super();
-        if (statement) {
-            this._optionalCollection.push(statement);
-        }
+        items.map((item) => {
+            this._optionalCollection.push(item);
+        });
     }
 
     addComponent(triple: string) {
@@ -22,4 +25,8 @@ export class Optional extends Clause {
 
         return `OPTIONAL {\n${this._indent}${[...selected].join(' .\n')}\n}`;
     }
+}
+
+export function optional(...items: (string | Triple)[]) {
+    return new Optional(...items);
 }
