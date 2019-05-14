@@ -5,7 +5,6 @@ import { Optional } from './optional';
 
 export class Graph extends Clause {
     private _iri: string;
-    private _graphCollection: any = [];
 
     constructor(iri: string) {
         super();
@@ -13,11 +12,11 @@ export class Graph extends Clause {
     }
 
     addComponent(item: string | Triple | Optional) {
-        this._graphCollection.push(item);
+        this._components.push(item);
     }
 
     build() {
-        let selected = map(this._graphCollection, (item) => {
+        let selected = map(this._components, (item) => {
             return item
         })
         return `GRAPH ${this._iri} {\n${[...selected].join('.\n')}\n}\n`;

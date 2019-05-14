@@ -1,13 +1,26 @@
 import { INDENT_SIZE } from "./../../config/config";
 
 export abstract class Clause {
-    _indent: string = '';
+    private _id: string;
+    private _indent: string = '';
+    protected _components: any = [];
     /**
      * Turns the clause into a query string.
      * @return {string} Partial query string.
      */
     abstract build(): string;
 
+    get id() {
+        return this._id;
+    }
+
+    set id(id) {
+        id = this._id;
+    }
+
+    findComponent(id: string) {
+        this
+    }
     /**
      * Turns the clause into a query string.
      * @return {string} Partial query string.

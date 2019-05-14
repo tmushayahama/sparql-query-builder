@@ -23,7 +23,7 @@ export class Optional extends Clause {
             return item;
         })
 
-        return `OPTIONAL {\n${this._indent}${[...selected].join(' .\n')}\n}`;
+        return `OPTIONAL {\n${[...selected].join(' .\n')}\n}`;
     }
 }
 

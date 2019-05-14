@@ -6,20 +6,18 @@ import { Query } from './../../query';
 import { Optional } from '../optional';
 
 export class Where extends Clause {
-    private _whereCollection: any[] = [];
 
     constructor() {
         super();
     }
 
     addComponent(triple: Triple | Graph | Optional | Query | string) {
-        this._whereCollection.push(triple);
+        this._components.push(triple);
     }
 
     build() {
-        let selected = map(this._whereCollection, (item: Clause | string) => {
+        let selected = map(this._components, (item: Clause | string) => {
             if (item instanceof Clause) {
-                item.indent(this._indent);
                 return item.build();
             }
 

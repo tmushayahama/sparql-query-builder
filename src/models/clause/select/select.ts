@@ -2,18 +2,17 @@ import { Clause } from './../clause';
 import { map } from 'lodash';
 
 export class Select extends Clause {
-    private _selectCollection: any = [];
 
     constructor() {
         super();
     }
 
     addComponent(item: string) {
-        this._selectCollection.push(item);
+        this._components.push(item);
     }
 
     build() {
-        let selected = map(this._selectCollection, (item) => {
+        let selected = map(this._components, (item) => {
             return item
         })
         return `SELECT ${[...selected].join('\n\t')}\n`;
