@@ -404,4 +404,49 @@ let buildCamsByGPQuery = (gpIri: string) => {
     return query.build();
 }
 
+let buildCamsByGroupQuery = (groupName: string) => {
+    let query = new Query();
+    let graphQuery = new Query();
+    graphQuery.graph('?model',
+        '?model metago:graphType metago:noctuaCam; dc:date ?date; dc:title ?modelTitle; dc:contributor ?orcid; providedBy: ?providedBy',
+        'BIND( IRI(?orcid) AS ?orcidIRI )',
+        'BIND( IRI(?providedBy) AS ?providedByIRI )'
+    );
+
+    query.prefix(
+        prefix('rdf', '<http://www.w3.org/1999/02/22-rdf-syntax-ns#>'),
+        prefix('rdfs', '<http://www.w3.org/2000/01/rdf-schema#>'),
+        prefix('dc', '<http://purl.org/dc/elements/1.1/>'),
+        prefix('metago', '<http://model.geneontology.org/>'),
+        prefix('owl', '<http://www.w3.org/2002/07/owl#>'),
+        prefix('GO', '<http://purl.obolibrary.org/obo/GO_>'),
+        prefix('BP', '<http://purl.obolibrary.org/obo/GO_0008150>'),
+        prefix('MF', '<http://purl.obolibrary.org/obo/GO_0003674>'),
+        prefix('CC', '<http://purl.obolibrary.org/obo/GO_0005575>'),
+        prefix('providedBy', '<http://purl.org/pav/providedBy>'),
+        prefix('vcard', '<http://www.w3.org/2006/vcard/ns#>'),
+        prefix('has_affiliation', '<http://purl.obolibrary.org/obo/ERO_0000066>'),
+        prefix('enabled_by', '<http://purl.obolibrary.org/obo/RO_0002333>'),
+        prefix('obo', '<http://www.geneontology.org/formats/oboInOwl#>'))
+        .select(
+            'distinct ?model ?modelTitle ?date',
+            '(GROUP_CONCAT(distinct ?entity;separator="@@") as ?entities)',
+            '(GROUP_CONCAT(distinct ?orcid;separator="@@") as ?contributors)'
+        ).where(
+            `BIND("${groupName}" as ?groupName)`,
+            graphQuery,
+            optional(
+                triple('?providedByIRI', 'rdfs:label', '?providedByLabel')
+            ),
+            'FILTER(?providedByLabel = ?groupName )',
+            'BIND(IF(bound(?name), ?name, ?orcid) as ?name)',
+        )
+        .groupBy('?model ?modelTitle ?aspect ?date')
+        .orderBy('?date', 'DESC');
+
+    return query.build();
+}
+
 console.log(buildCamsByGPQuery('http://identifiers.org/uniprot/O95477'))
+
+console.log(buildCamsByGroupQuery('dictyBase')) 
