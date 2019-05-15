@@ -7,6 +7,8 @@ import {
     Triple,
     Query,
     triple,
+    limit,
+    offset
 
 } from "./models";
 
@@ -442,7 +444,8 @@ let buildCamsByGroupQuery = (groupName: string) => {
             'BIND(IF(bound(?name), ?name, ?orcid) as ?name)',
         )
         .groupBy('?model ?modelTitle ?aspect ?date')
-        .orderBy('?date', 'DESC');
+        .orderBy('?date', 'DESC')
+        .limit(10)
 
     return query.build();
 }

@@ -23,3 +23,7 @@ export class OrderBy extends Clause {
         return `ORDER BY ${this._direction} (${this._fields})`;
     }
 }
+
+export function orderBy(fields: string, direction?: Direction) {
+    return new OrderBy(fields, direction);
+}

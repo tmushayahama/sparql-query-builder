@@ -1,6 +1,8 @@
 export { Clause } from './clause';
 export { GroupBy } from './groupBy';
+export { Limit, limit } from './limit';
 export { Optional, optional } from './optional';
+export { Offset, offset } from './offset';
 export { OrderBy } from './orderBy';
 export { Prefix, prefix } from './prefix/prefix';
 export { Select } from './select/select';

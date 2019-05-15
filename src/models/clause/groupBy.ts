@@ -12,3 +12,7 @@ export class GroupBy extends Clause {
         return `GROUP BY ${this._fields}`;
     }
 }
+
+export function groupBy(fields: string) {
+    return new GroupBy(fields);
+}

@@ -7,7 +7,9 @@ import {
     Where,
     Graph,
     Optional,
-    Clause
+    Clause,
+    Limit,
+    Offset
 } from "./clause";
 import { Triple } from "./triple";
 import { Direction } from "./clause/orderBy";
@@ -57,5 +59,13 @@ export abstract class Builder<T> extends Clause {
 
     groupBy(fields: string) {
         return this.addClause(new GroupBy(fields));
+    }
+
+    limit(limit: number) {
+        return this.addClause(new Limit(limit));
+    }
+
+    offset(offset: number) {
+        return this.addClause(new Offset(offset));
     }
 }
