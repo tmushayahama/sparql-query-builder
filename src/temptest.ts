@@ -449,6 +449,55 @@ let buildCamsByGroupQuery = (groupName: string) => {
 
     return query.build();
 }
+`
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX metago: <http://model.geneontology.org/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX GO: <http://purl.obolibrary.org/obo/GO_>
+PREFIX BP: <http://purl.obolibrary.org/obo/GO_0008150>
+PREFIX MF: <http://purl.obolibrary.org/obo/GO_0003674>
+PREFIX CC: <http://purl.obolibrary.org/obo/GO_0005575>
+PREFIX providedBy: <http://purl.org/pav/providedBy>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX has_affiliation: <http://purl.obolibrary.org/obo/ERO_0000066>
+PREFIX enabled_by: <http://purl.obolibrary.org/obo/RO_0002333>
+PREFIX obo: <http://www.geneontology.org/formats/oboInOwl#>
+prefix evidence: <http://geneontology.org/lego/evidence>
+SELECT distinct ?model ?modelTitle ?axiom ?edge ?eve ?source
+	(GROUP_CONCAT(distinct ?entity;separator="@@") as ?entities)
+
+WHERE{
+GRAPH ?model {
+?model metago:graphType metago:noctuaCam; dc:title ?modelTitle .
+
+  
+  ?entity rdf:type GO:0017127.
+  ?entity2 rdf:type <http://identifiers.org/uniprot/O95477>. 
+ # ?entity enabled_by: ?entity2. 
+  
+   ?axiom owl:annotatedProperty enabled_by: .
+   ?axiom owl:annotatedSource ?iri .
+   ?axiom owl:annotatedTarget ?iri2 .
+  
+   ?axiom evidence: ?eve .
+   ?eve dc:source ?source .
+            BIND(REPLACE(?source, " ", "") AS ?source) .
+            FILTER((CONTAINS(?source, "PMID:1234")))
+   #?eve dc:source "PMID:1234"
+#FILTER(?term = GO:0017127 ).
+  
+
+#?s enabled_by: ?entity2.
+#FILTER(?term2 = <http://identifiers.org/uniprot/O95477>)
+
+  }
+
+}
+
+GROUP BY ?model ?modelTitle ?axiom ?edge ?eve ?source
+LIMIT 5`
 
 console.log(buildCamsByGPQuery('http://identifiers.org/uniprot/O95477'))
 
